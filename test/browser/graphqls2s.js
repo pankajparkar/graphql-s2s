@@ -144,11 +144,21 @@ var runtest = function(s2s, assert) {
     id: ID! 
     name: String!
   }
-
   type PostUserRating inherits Post {
     rating: PostRating!
   }
   `
+  var schema_inheritance_1 = `
+  type Name {  
+    name: String! 
+  } 
+  type Author { 
+    author: String! 
+  }
+  type PostUserRating inherits Name,Author {
+    rating: String!
+  }`
+
   var schema_output_1 = `
   type Post {
       id: ID!
@@ -159,18 +169,39 @@ var runtest = function(s2s, assert) {
       id: ID!
       name: String!
       rating: PostRating!
+  }
+  `
+
+  var schema_inheritance_output_1 = `
+  type Name { name: String! }
+  type Author { 
+    author: String! 
+  }
+  type PostUserRating {
+    name: String! 
+    author: String! 
+    rating: String!
   }`
 
   /*eslint-disable */
   describe('graphqls2s', () => 
-    describe('#transpileSchema: 03 - INHERITANCE', () => 
+    describe('#transpileSchema: 03 - INHERITANCE', () => {
       it('Should add properties from the super type to the sub type.', () => {
         /*eslint-enable */
         var output = transpileSchema(schema_input_1)
         var answer = compressString(output)
         var correct = compressString(schema_output_1)
         assert.equal(answer,correct)
-      })))
+      })
+      it('Should support multiple inheritance type.', () => {
+        /*eslint-enable */
+        var output = transpileSchema(schema_inheritance_1)
+        var answer = compressString(output)
+        var correct = compressString(schema_inheritance_output_1)
+        assert.equal(answer,correct)
+      })
+    })
+  )
 
   var schema_input_xdwe3d = `
   type Person {
