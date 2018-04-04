@@ -159,6 +159,21 @@ var runtest = function(s2s, assert) {
     rating: String!
   }`
 
+  var schema_inheritance_implements_1 = `
+  interface Node  {  
+    id: Int! 
+  } 
+  type Name {  
+    name: String! 
+  } 
+  type Author { 
+    author: String! 
+  }
+  type PostUserRating inherits Name,Author implements Node {
+    id: Int!
+    rating: String!
+  }`
+
   var schema_output_1 = `
   type Post {
       id: ID!
@@ -173,13 +188,32 @@ var runtest = function(s2s, assert) {
   `
 
   var schema_inheritance_output_1 = `
-  type Name { name: String! }
+  type Name { 
+    name: String! 
+  }
   type Author { 
     author: String! 
   }
   type PostUserRating {
     name: String! 
     author: String! 
+    rating: String!
+  }`
+
+  var schema_inheritance_implements_output_1 = `
+  interface Node {
+    id:Int!
+  }
+  type Name { 
+    name: String! 
+  }
+  type Author { 
+    author: String! 
+  }
+  type PostUserRating implements Node {
+    name: String! 
+    author: String! 
+    id: Int! 
     rating: String!
   }`
 
@@ -198,6 +232,13 @@ var runtest = function(s2s, assert) {
         var output = transpileSchema(schema_inheritance_1)
         var answer = compressString(output)
         var correct = compressString(schema_inheritance_output_1)
+        assert.equal(answer,correct)
+      })
+      it('Should support multiple inheritance type with implements interface.', () => {
+        /*eslint-enable */
+        var output = transpileSchema(schema_inheritance_implements_1)
+        var answer = compressString(output)
+        var correct = compressString(schema_inheritance_implements_output_1)
         assert.equal(answer,correct)
       })
     })
