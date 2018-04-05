@@ -159,6 +159,22 @@ var runtest = function(s2s, assert) {
     rating: String!
   }`
 
+  var schema_inheritance_missingtype = `
+  type Name {  
+    name: String! 
+  }
+  type PostUserRating inherits Name,Author {
+    rating: String!
+  }`
+
+  var schema_incorrect_inheritance = `
+  interface Name {  
+    name: String! 
+  }
+  type PostUserRating inherits Name {
+    rating: String!
+  }`
+
   var schema_inheritance_implements_1 = `
   interface Node  {  
     id: Int! 
@@ -240,6 +256,20 @@ var runtest = function(s2s, assert) {
         var answer = compressString(output)
         var correct = compressString(schema_inheritance_implements_output_1)
         assert.equal(answer,correct)
+      })
+      it('Should display an error if inherited type is missing.', () => {
+        /*eslint-enable */
+        assert.throws(() => 
+          transpileSchema(schema_inheritance_missingtype), 
+          "Schema error: type PostUserRating cannot find inherited type Author"
+        )
+      })
+      it('Should display an error if inherits have type != "TYPE".', () => {
+        /*eslint-enable */
+        assert.throws(() => 
+          transpileSchema(schema_incorrect_inheritance),
+          "Schema error: type PostUserRating cannot inherit from INTERFACE Name. A type can only inherit from another type"
+        )
       })
     })
   )
