@@ -257,14 +257,14 @@ var runtest = function(s2s, assert) {
         var correct = compressString(schema_inheritance_implements_output_1)
         assert.equal(answer,correct)
       })
-      it('Should display an error if inherited type is missing.', () => {
+      it('Should throw an error if inherited type is missing.', () => {
         /*eslint-enable */
         assert.throws(() => 
           transpileSchema(schema_inheritance_missingtype), 
           "Schema error: type PostUserRating cannot find inherited type Author"
         )
       })
-      it('Should display an error if inherits have type != "TYPE".', () => {
+      it('Should throw an error if inherits from wrong type, it should be of "type=\'TYPE\'".', () => {
         /*eslint-enable */
         assert.throws(() => 
           transpileSchema(schema_incorrect_inheritance),

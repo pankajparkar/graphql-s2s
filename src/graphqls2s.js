@@ -15,8 +15,7 @@ const INPUTNAMEREGEX = /input\s(.*?){/
 const ENUMNAMEREGEX = /enum\s(.*?){/
 const INTERFACENAMEREGEX = /interface\s(.*?){/
 const ABSTRACTNAMEREGEX = /abstract\s(.*?){/
-//TODO:  Change the regular expression
-var INHERITSREGEX = /inherits\s(.*?)\s/mg;
+const INHERITSREGEX = /inherits\s+\w+(?:\s*,\s*\w+)*/g;
 const IMPLEMENTSREGEX = /implements\s(.*?)\{/mg
 const PROPERTYPARAMSREGEX = /\((.*?)\)/
 
